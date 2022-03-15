@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>quizHub - Session Results</title>
+
+<!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
+
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/results.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
+    <script type="text/javascript" th:src="@{js/main.js}" defer></script>
+    <!--script src="../static/js/main.js"></script>
+    <link rel="stylesheet" href="../static/css/results.css"-->
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="header">
+            <div class="usernav">
+                <div class="userinfo">
+                    <a href="/"><img th:src="@{/img/quizhub/quizhub.png}" alt="Go Home"></a>
+                </div>
+
+                <div class="authbuttons">
+                    <span sec:authorize="isAuthenticated()" class="userdata">
+                        <!--p>Welcome [[${#request.userPrincipal.principal.email}]]</p-->
+                        <h3 style="color: white">
+                            Logged in as <span sec:authentication="principal.username"></span>
+                        </h3>
+                        <p class="logout"><a th:href="@{/logout}">Logout</a></p>
+                    </span>
+
+                    <span sec:authorize="!isAuthenticated()" class="w3-bar-item w3-right">
+                        <a th:href="@{/login}" class="login" role="button" aria-pressed="true">Log In</a>
+                        &nbsp;
+                        <a th:href="@{/register}" class="signup" role="button" aria-pressed="true">Sign Up</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="quizinfo">
+                <h1 th:text="${quizSession.quiz.name}">QUIZ NAME</h1>
+
+                <h2>Total Score: </h2>
+    
+                <h2 th:text="${score} + ${totalScore}">Score</h2>
+
+                <h3 th:if="${role=='teacher'}" th:text="${quizSession.getStudent().getFullName()}"> Student Name </h3>
+            </div>
+
+            <div class="answers">
+                <div class="legend">
+                    <span>
+                        The correct answer(s) is(/are) marked with <span style="color: rgb(0, 255, 0);">✔</span>.
+                    </span>
+                </div>
+
+                <div th:each="question: ${questions}">
+                    <span class="question" th:text="${question.getQuestionText()} + ${question.getScoreToString()}">Question text?</span>
+                        <div th:each="studentAnswer: ${question.getStudentAnswers()}" class="answerDiv">
+                            <div th:if="${studentAnswer.isCorrect() == studentAnswer.getAnswer().isCorrect()}"
+                                 class="questionAnswer correct" >
+                                <span th:text="${studentAnswer.getAnswer().getText()}">Answer</span>
+                                <span th:if="${studentAnswer.getAnswer().isCorrect()}"> ✔ </span>
+                            </div>
+                            <div th:unless="${studentAnswer.isCorrect() == studentAnswer.getAnswer().isCorrect()}"
+                                 class="questionAnswer wrong">
+                                <span th:text="${studentAnswer.getAnswer().getText()}">Answer</span>
+                                <span th:if="${studentAnswer.getAnswer().isCorrect()}"> ✔ </span>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

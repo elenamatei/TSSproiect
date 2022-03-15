@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>quizHub - Home</title>
+
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+    <link rel="stylesheet" th:href="@{css/home.css}">
+<!--    <link rel="stylesheet" href="../static/css/home.css">-->
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="header">
+            <div class="usernav">
+                <div class="userinfo">
+                    <a href="/"><img th:src="@{/img/quizhub/quizhub.png}" alt="Go Home"></a>
+                </div>
+
+                <div class="authbuttons">
+                    <span sec:authorize="isAuthenticated()" class="userdata">
+                        <!--p>Welcome [[${#request.userPrincipal.principal.email}]]</p-->
+                        <h3 style="color: white">
+                            Logged in as <span sec:authentication="principal.username"></span>
+                        </h3>
+                        <p class="logout"><a th:href="@{/logout}">Logout</a></p>
+                    </span>
+
+                    <span sec:authorize="!isAuthenticated()" class="w3-bar-item w3-right">
+                        <a th:href="@{/login}" class="login" role="button" aria-pressed="true">Log In</a>
+                        &nbsp;
+                        <a th:href="@{/register}" class="signup" role="button" aria-pressed="true">Sign Up</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" sec:authorize="isAuthenticated()">
+            <div class="main-content">
+                <h1 th:if="${role == 'teacher'}">Create a new Quiz</h1>
+                <form th:if="${role == 'teacher'}" th:action="@{/quizzes/add}" method="post">
+                    <input type="hidden" name="authorId" th:value="${user.getId()}" id="author_id" class="hidden" />
+
+                    <div class="form-textbox">
+                        <label for="quiz_name">Quiz Name</label>
+                        <input class="text" type="text" name="name" id="quiz_name" />
+                    </div>
+
+                    <div class="custom-select">
+                        <select name="classId" id="class_id">
+                            <option value="selected" selected>CLASS</option>
+                            <option th:each="class: ${classes}" th:value="${class.getId()}" th:text="${class.getName()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-textbox">
+                        <input type="submit" id="submit" class="submit" value="Create Quiz"/>
+                    </div>
+                </form>
+
+                <div th:if="${quizzes.size() > 0}" class="your-quizzes">
+                    <h2 >Your quizzes: </h2>
+
+                    <div th:each="quiz: ${quizzes}">
+                        <a th:href="@{/quizzes/__${quiz.id}__}" th:text="${quiz.getName()}"></a>
+                    </div>
+                </div>
+
+
+                <div th:if="${role != 'teacher'}" th:unless="${quizzes.size() > 0}" class="your-quizzes">
+                    <h2> You have no active quizzes. 🥳 </h2>
+
+                </div>
+
+
+
+
+<!--                <div th:each="class: ${classes}">-->
+<!--                    <div th:text="${class.getName()}"></div>-->
+<!--                </div>-->
+            </div>
+            <div class="coming-soon">
+                <img th:src="@{/img/BattleRoyaleQuiz.jpg}" alt="Battle Royale Quiz">
+                <img th:src="@{/img/ClassicChampionshipQuiz.jpg}" alt="Classic Championship Quiz">
+                <img th:src="@{/img/TeamQuiz.jpg}" alt="Classic Championship Quiz">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{js/main.js}"></script>
+    <script src="../static/js/main.js"></script>
+</body>
+
+</html>

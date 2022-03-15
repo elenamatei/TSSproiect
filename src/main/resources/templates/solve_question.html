@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>quizHub - Answer Question</title>
+
+
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+<!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
+    <link rel="stylesheet" th:href="@{/css/solve_question.css}">
+    <link rel="stylesheet" href="../static/css/solve_question.css">
+</head>
+
+<body>
+
+<div class="main">
+    <div class="header">
+        <div class="usernav">
+            <div class="userinfo">
+                <a href="/"><img th:src="@{/img/quizhub/quizhub.png}" alt="Go Home"></a>
+            </div>
+
+            <div class="authbuttons">
+                    <span sec:authorize="isAuthenticated()" class="userdata">
+                        <!--p>Welcome [[${#request.userPrincipal.principal.email}]]</p-->
+                        <h3 style="color: white">
+                            Logged in as <span sec:authentication="principal.username"></span>
+                        </h3>
+                        <p class="logout"><a th:href="@{/logout}">Logout</a></p>
+                    </span>
+
+                <span sec:authorize="!isAuthenticated()" class="w3-bar-item w3-right">
+                        <a th:href="@{/login}" class="login" role="button" aria-pressed="true">Log In</a>
+                        &nbsp;
+                        <a th:href="@{/register}" class="signup" role="button" aria-pressed="true">Sign Up</a>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="quizinfo">
+            <h1 th:text="${quizSession.quiz.name}">Nume quiz</h1>
+            <h2 th:text="${question.getQuestionText()}">Intrebare: Are Ana mere?</h2>
+        </div>
+
+        <div class="answers">
+            <form th:action="@{/quizzes/__${quizSession.id}__/question/__${question.getId()}__}" method="post">
+                    <div th:each="answer, iStat: ${question.answers}" class="answer form-radio">
+                        <label th:for="isAnswerCorrect + ${iStat.index}" th:text="${answer.getText()}"></label>
+                        <div class="variante">
+                            <input type="radio" th:name="isAnswerCorrect + ${iStat.index}" value="true" th:id="newbie + ${iStat.index}"/>
+                            <label th:for="newbie + ${iStat.index}">Correct</label>
+
+                            <input type="radio" th:name="isAnswerCorrect + ${iStat.index}" value="false" th:id="average + ${iStat.index}" checked="checked"/>
+                            <label th:for="average + ${iStat.index}">Wrong</label>
+                        </div>
+                    </div>
+                <div class="submit-buttons">
+                    <div th:if="${previousQuestionId != -1}"  class="form-textbox">
+                        <a th:href="@{/quizzes/__${quizSession.id}__/question/__${previousQuestionId}__}" class="submit">
+                            Previous Question
+                        </a>
+                    </div>
+
+                    <div th:if="${nextQuestionId != -1}" class="form-textbox">
+                        <input class="submit" type="submit" id="submit_next" value="Next Question">
+                    </div>
+
+                    <div th:if="${nextQuestionId == -1}" class="form-textbox">
+                        <input class="submit" type="submit" id="submit_quiz" value="Submit Quiz">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{js/main.js}"></script>
+<script src="../static/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>quizHub - Quiz Info</title>
+
+
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/view_quiz.css}">
+    <link rel="stylesheet" href="../static/css/view_quiz.css">
+</head>
+
+<body>
+
+<div class="main">
+    <div class="header">
+        <div class="usernav">
+            <div class="userinfo">
+                <a href="/"><img th:src="@{/img/quizhub/quizhub.png}" alt="Go Home"></a>
+            </div>
+
+            <div class="authbuttons">
+                    <span sec:authorize="isAuthenticated()" class="userdata">
+                        <!--p>Welcome [[${#request.userPrincipal.principal.email}]]</p-->
+                        <h3 style="color: white">
+                            Logged in as <span sec:authentication="principal.username"></span>
+                        </h3>
+                        <p class="logout"><a th:href="@{/logout}">Logout</a></p>
+                    </span>
+
+                <span sec:authorize="!isAuthenticated()" class="w3-bar-item w3-right">
+                        <a th:href="@{/login}" class="login" role="button" aria-pressed="true">Log In</a>
+                        &nbsp;
+                        <a th:href="@{/register}" class="signup" role="button" aria-pressed="true">Sign Up</a>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 th:text="${quiz.getName()}"></h1>
+        <div th:if="${role == 'teacher'}">
+            <h2 th:if="${quizSessions.size() > 0}">Students attempts:</h2>
+            <h2 th:unless="${quizSessions.size() > 0}">There are no attempts for this quiz.</h2>
+            <div th:each="quizSession: ${quizSessions}">
+                <h3>
+                    <span>Student:</span>
+                    <span th:text="${quizSession.getStudent().getFullName()}"></span>
+                    <br/>
+                </h3>
+                <h3 class="submit submit-teacher">
+                    <a th:href="@{/quizzes/session/__${quizSession.getId()}__}">
+                        <span> Score </span>
+                        <span th:text="${quizSession.getScore()}"></span>
+                    </a>
+                </h3>
+            </div>
+        </div>
+
+        <div th:unless="${role == 'teacher'}">
+            <form th:action="@{/quizzes/__${quiz.id}__/attemptQuiz}" method="post">
+                <div class="form-textbox">
+                    <input class="submit" type="submit" id="submit_quiz" value="Attempt Quiz">
+                </div>
+            </form>
+            <h2 th:if="${quizSessions.size() > 0}"><span class="question">Past sessions</span></h2>
+
+
+                <h3 th:if="${quizSessions.size() > 0}" th:each="quizSession: ${quizSessions}" class="submit">
+                    <a th:href="@{/quizzes/session/__${quizSession.getId()}__}">
+                        <span> Score </span>
+                        <span th:text="${quizSession.getScore()}"></span>
+                    </a>
+                </h3>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{js/main.js}"></script>
+<script src="../static/js/main.js"></script>
+</body>
+
+</html>

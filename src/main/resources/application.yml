@@ -1,0 +1,20 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+#  thymeleaf:
+#      prefix: classpath:/templates/
+  datasource:
+    password: 123456
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true

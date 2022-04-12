@@ -7,12 +7,13 @@ spring:
 #  thymeleaf:
 #      prefix: classpath:/templates/
   datasource:
-    password: 123456
-    url: jdbc:postgresql://localhost:5432/users
+    password: alex
+    url: jdbc:postgresql://localhost:5432/tss
     username: postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop # validate
+      enable_lazy_load_no_trans: true
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

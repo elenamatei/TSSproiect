@@ -2,7 +2,6 @@ package com.example.demo.appuser.controller;
 
 import com.example.demo.appuser.service.TeacherService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.web.bind.annotation.*;
 

@@ -6,7 +6,6 @@ import com.example.demo.appuser.service.ClassService;
 import com.example.demo.registration.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import javax.persistence.EntityNotFoundException;
 
 @RestController

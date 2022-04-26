@@ -1,6 +1,5 @@
 package com.example.demo.security.config;
 
-//import com.example.demo.appuser.AppUserService;
 import com.example.demo.appuser.service.StudentService;
 import com.example.demo.appuser.service.TeacherService;
 import lombok.AllArgsConstructor;
@@ -43,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout").permitAll();
+        http.csrf().disable();
+
     }
 
     @Override

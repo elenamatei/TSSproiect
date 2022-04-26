@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -17,46 +16,49 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class TeacherControllerTest {
+class StudentControllerTest {
+
     @Autowired
-    TeacherController teacherController;
+    StudentController studentController;
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    @DisplayName("get teacher by id on success")
-    void getTeacherByIdSuccessful() {
+    @DisplayName("get student by id on success")
+    void getStudentByIdSuccessful() {
         try {
-            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/teachers/1"))
+            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/students/3"))
                     .andExpect(status().isOk())
                     .andReturn();
             String content = result.getResponse().getContentAsString();
-            System.out.println(content);
+
+            Assertions.assertTrue(content.contains("firstName"));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    @DisplayName("get teacher by id on fail")
-    void getTeacherByIdFailed() {
+    @DisplayName("get student by id on fail")
+    void getStudentByIdFailed() {
         try {
-            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/teachers/0"))
+            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/students/1"))
                     .andExpect(status().isOk())
                     .andReturn();
             String content = result.getResponse().getContentAsString();
-            System.out.println(content);
+
+            Assertions.assertFalse(content.contains("firstName"));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    @DisplayName("trying to enroll teacher to class on success")
+    @DisplayName("trying to enroll student to class on success")
     void tryEnrollToClassSuccessful() {
         try {
-            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.post("/teachers/1/enroll_to_class/1"))
+            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.post("/students/3/enroll_to_class/1"))
                     .andExpect(status().isOk())
                     .andReturn();
             String content = result.getResponse().getContentAsString();
@@ -67,10 +69,10 @@ class TeacherControllerTest {
     }
 
     @Test
-    @DisplayName("trying to enroll teacher to class on fail")
+    @DisplayName("trying to enroll student to class on fail")
     void tryEnrollToClassFailed() {
         try {
-            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.post("/teachers/0/enroll_to_class/1"))
+            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.post("/students/0/enroll_to_class/1"))
                     .andExpect(status().isOk())
                     .andReturn();
             String content = result.getResponse().getContentAsString();

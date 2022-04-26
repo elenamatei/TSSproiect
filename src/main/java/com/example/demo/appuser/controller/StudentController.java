@@ -4,7 +4,6 @@ import com.example.demo.appuser.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.persistence.EntityNotFoundException;
 
 @RestController

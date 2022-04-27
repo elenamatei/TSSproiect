@@ -19,9 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class TeacherControllerTest {
     @Autowired
-    TeacherController teacherController;
-
-    @Autowired
     MockMvc mockMvc;
 
     @Test

@@ -80,4 +80,32 @@ class QuizControllerTest {
         }
     }
 
+    @Test
+    @DisplayName("get questuions from quiz on success")
+    void getQuestuionsFromQuizSuccess() {
+        try {
+            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/quizzes/5/questions"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String content = result.getResponse().getContentAsString();
+            Assertions.assertTrue(content.contains("[Question"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @DisplayName("get questuions from quiz on fail")
+    void getQuestuionsFromQuizFail() {
+        try {
+            MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/quizzes/0/questions"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String content = result.getResponse().getContentAsString();
+            Assertions.assertTrue(content.contains("[]"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

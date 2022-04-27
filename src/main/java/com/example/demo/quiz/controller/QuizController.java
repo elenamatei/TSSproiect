@@ -30,7 +30,6 @@ public class QuizController {
     private final QuizService quizService;
     private final QuestionAnswerService questionAnswerService;
     private final StudentAnswerService studentAnswerService;
-
     @PostMapping(value="/add")
     public ModelAndView addQuiz(@ModelAttribute QuizRequest request) {// @ModelAttribute
         Quiz quiz = quizService.addQuiz(request);

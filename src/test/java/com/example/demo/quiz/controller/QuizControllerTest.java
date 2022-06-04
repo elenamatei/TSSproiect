@@ -23,8 +23,8 @@ class QuizControllerTest {
     MockMvc mockMvc;
 
     @Test
-    @DisplayName("get questuion answers on success")
-    void getQuestuionAnswersSuccess() {
+    @DisplayName("get question answers on success")
+    void getQuestionAnswersSuccess() {
         try {
             MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/quizzes/questions/6/answers"))
                     .andExpect(status().isOk())
@@ -38,8 +38,8 @@ class QuizControllerTest {
     }
 
     @Test
-    @DisplayName("get questuion answers on fail")
-    void getQuestuionAnswersFail() {
+    @DisplayName("get question answers on fail")
+    void getQuestionAnswersFail() {
         try {
             MvcResult result = (MvcResult) mockMvc.perform( MockMvcRequestBuilders.get("/quizzes/questions/0/answers"))
                     .andExpect(status().isOk())
